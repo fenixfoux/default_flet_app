@@ -22,34 +22,32 @@ def page_route_change_handler(page):
         ),
     }
 
-    # link example: from_page/previous_page_name/to_page/next_page_name
+    # link example: from_page/previous_page_name/to_page/next_page_name optionally lang/language
     if page.route.startswith('from_page'):
-        # print(f"received path: {page.route}")
-        # print(f"split received path: {page.route.split('/')}")
         split_received_path = page.route.split('/')
         page_to_go_key = split_received_path[3]
         previous_page_key = split_received_path[1]
 
-        if page_to_go_key == 'dummy_1':
-            dummy_1_page = DummyPage1()
-            dummy_1_page.previous_page_key = previous_page_key
-            dummy_1_page.current_page_key = page_to_go_key
-            # dummy_1_page.selected_language = dummy_1_page.selected_language
-            # dummy_1_page.page_name = get_page_name(dummy_1_page.selected_language, dummy_1_page.current_page_key)
-            def_appbar = dummy_1_page.create_appbar(
-                    current_page_name=dummy_1_page.page_name,
-                    is_home=dummy_1_page.is_home
-                )
+        # FOR ALL PAGES THE ROUTING PROCEDURE IS THE SAME
+        # todo: in the future is possible to create routing files for categories or pages, need experience
+        if page_to_go_key == 'dummy_1':  # key page of the page to go to
+            dummy_1_page = DummyPage1()  # initiate object of page class
+            dummy_1_page.previous_page_key = previous_page_key  # the key of the page where the onClick event was raised
+            dummy_1_page.current_page_key = page_to_go_key  # the key of the page to navigate to
+            dummy_1_page.page_name = get_page_name(dummy_1_page.selected_language, dummy_1_page.current_page_key)
+            def_appbar = dummy_1_page.create_appbar(  # create app bar and set its page name
+                current_page_name=dummy_1_page.page_name,
+                is_home=dummy_1_page.is_home
+            )
+            # below extend the list of actions of default appbar
             def_appbar.actions = dummy_1_page.create_additional_appbar_actions() + def_appbar.actions
-            dummy_1_page_content = dummy_1_page.create_content_page()
-            pages[page.route] = ft.View(
+            dummy_1_page_content = dummy_1_page.create_content_page()  # get page content part
+            pages[page.route] = ft.View(  # routing section, create and add the View on the page
                 route=page.route,
                 controls=[ft.SafeArea(content=dummy_1_page_content)],
                 appbar=def_appbar
             )
 
-    page.views.clear()
-    page.views.append(pages.get(page.route, pages['/']))
-    page.update()
-
-
+    page.views.clear()  # clear page from views before adding new one
+    page.views.append(pages.get(page.route, pages['/']))  # append created view to the page
+    page.update()  # update the page for seeing appended view

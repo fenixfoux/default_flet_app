@@ -25,7 +25,7 @@ class DummyPage1(HomePage):
 
     def create_content_page(self) -> ft.Column:
         self.content_page.controls = [
-            ft.Text(f"This is {self.page_name} page"),
+            ft.Text(f"{self.page_name} page"),
         ]
         # self.content_page.alignment = ft.MainAxisAlignment.END
         # self.content_page.height = 400

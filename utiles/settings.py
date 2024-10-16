@@ -39,6 +39,7 @@ class AppSettings:
         return self.all_settings[property_name]
 
     def set_property(self, property_name, property_value):
+        print(f"Setting {property_name} to {property_value}")  # Add this to see what's being saved
         self.all_settings[property_name] = property_value
         with open(settings_filepath, 'w') as file:
             json.dump(self.all_settings, file, indent=4)

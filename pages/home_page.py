@@ -12,7 +12,6 @@ class HomePage:
         self.current_settings = AppSettings()
         self.selected_language = AppSettings().get_property(property_name='language')
         self.all_pages = get_all_pages(self.selected_language)
-        # self.page_name = get_page_name(self.selected_language, self.current_page_key)
         self.page_name = ''
         self.app_bar = self.create_appbar()
         self.content_page = ft.Column()
@@ -28,7 +27,8 @@ class HomePage:
 
             language_widgets.items.append(
                 ft.PopupMenuItem(
-                    on_click=lambda e, l=lang: self.switch_language(l, e),  # Pass the language to switch
+                    on_click=lambda e, l=lang: go_to_page(
+                        e, current_page=self.current_page_key, page_to_go=self.current_page_key, lang=l),
                     content=ft.Row(
                         vertical_alignment=ft.CrossAxisAlignment.START,
                         controls=[
@@ -59,27 +59,6 @@ class HomePage:
     def test_something(self, e):
         """function for test different things"""
         print(f"test button was pressed on home page :D")
-
-    def switch_language(self, new_language, e):
-        if new_language != self.selected_language:
-            # Update the language setting
-            self.selected_language = new_language
-            self.current_settings.set_property(property_name='language', property_value=self.selected_language)
-            # Recreate the whole page (app bar and content) based on the new language
-            self.page_name = get_page_name(self.selected_language, self.current_page_key)
-            self.all_pages = get_all_pages(self.selected_language)
-
-            # Recreate app bar and content
-            e.page.views.clear()  # Clear views to refresh the page
-            updated_appbar = self.create_appbar(self.page_name, is_home=self.is_home)
-            e.page.views.append(
-                ft.View(
-                    "/",
-                    [ft.SafeArea(content=self.create_content_page())],
-                    appbar= updated_appbar
-                )
-            )
-            e.page.update()  # Trigger full update to reflect the language change
 
     def update_ui(self, e):
         self.app_bar.update()
