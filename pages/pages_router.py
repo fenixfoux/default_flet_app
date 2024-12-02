@@ -1,3 +1,4 @@
+import asyncio
 import flet as ft
 
 from pages.dummy_page_1 import DummyPage1
@@ -6,7 +7,7 @@ from utiles.settings import AppSettings
 from utiles.static_functions import get_page_name
 
 
-def page_route_change_handler(page):
+async def page_route_change_handler(page):
     page.update()
     print(f"event open new page initiated")
     home_page = HomePage()
